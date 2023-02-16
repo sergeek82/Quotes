@@ -1,0 +1,23 @@
+version: '3'
+services:
+  pg_db:
+    image: postgres:alpine
+    container_name: pg_db
+    environment:
+      POSTGRES_DB: "quotes"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "root"
+    ports:
+      - "54321:5432"
+  quotes:
+    image: filimonov21docker/quotes:0.1
+    container_name: quotes
+    depends_on:
+      - pg_db
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+    ports:
+      - "8090:8090"
+
+    command: java -jar Quotes.jar
+    # restart: always
